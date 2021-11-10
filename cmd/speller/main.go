@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/egorovdmi/go-challenges/cmd/speller/dictionary"
+	"github.com/egorovdmi/go-challenges/internals/platform/dictionaries"
 )
 
 const DEFAULT_DICTIONARY_FILE = "./assets/speller-hash/dictionaries/large"
@@ -35,7 +35,7 @@ func main() {
 	stringsForDict := readStringsFromFile(cfg.dictionaryFile)
 	textStrings := readStringsFromFile(cfg.textFile)
 
-	d := dictionary.NewDictionary()
+	d := dictionaries.NewDictionary()
 	d.Load(stringsForDict)
 
 	fmt.Println("MISSPELLED WORDS:")

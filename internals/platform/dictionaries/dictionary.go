@@ -1,4 +1,4 @@
-package dictionary
+package dictionaries
 
 import (
 	"hash/crc32"
