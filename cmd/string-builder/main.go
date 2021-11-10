@@ -1,6 +1,6 @@
 package main
 
-import "github.com/egorovdmi/cs50-assignments/internals/platform/strings"
+import "github.com/egorovdmi/go-challenges/internals/platform/strings"
 
 func main() {
 	sb := strings.NewStringBuilder()

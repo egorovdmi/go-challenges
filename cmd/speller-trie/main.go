@@ -1,6 +1,6 @@
 package main
 
-import "github.com/egorovdmi/cs50-assignments/internals/platform/trie"
+import "github.com/egorovdmi/go-challenges/internals/platform/trie"
 
 func main() {
 	t := trie.NewTrie()

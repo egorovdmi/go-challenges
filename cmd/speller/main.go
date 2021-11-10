@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/egorovdmi/cs50-assignments/cmd/speller/dictionary"
+	"github.com/egorovdmi/go-challenges/cmd/speller/dictionary"
 )
 
 const DEFAULT_DICTIONARY_FILE = "./assets/speller-hash/dictionaries/large"

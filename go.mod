@@ -1,3 +1,3 @@
-module github.com/egorovdmi/cs50-assignments
+module github.com/egorovdmi/go-challenges
 
 go 1.16
