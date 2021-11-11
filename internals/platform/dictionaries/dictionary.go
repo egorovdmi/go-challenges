@@ -1,11 +1,11 @@
 package dictionaries
 
 import (
-	"hash/crc32"
 	"strings"
 )
 
-const hashtableSize = 100
+const hashtableSize = 1000000
+const lettersInAlphabet = 26
 
 type item struct {
 	value string
@@ -82,6 +82,21 @@ func (l *list) addToList(value string) {
 }
 
 func hash(w string) int {
-	crc := crc32.ChecksumIEEE([]byte(strings.ToUpper(w)))
-	return int(crc % hashtableSize)
+	bytes := []byte(strings.ToUpper(w))
+	sum := 0
+	for i, b := range bytes {
+		x := int(b) * pow(lettersInAlphabet, i, hashtableSize)
+		sum += x
+	}
+
+	return sum % hashtableSize
+}
+
+func pow(number int, pow int, mod int) int {
+	r := 1
+	for i := 0; i < pow; i++ {
+		r = (r * number) % mod
+	}
+
+	return r
 }
