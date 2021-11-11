@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-const hashtableSize = 100000000
+const hashtableSize = 100
 
 type item struct {
 	value string
@@ -29,19 +29,16 @@ func NewDictionary() *Dictionary {
 	return &dict
 }
 
-func (d *Dictionary) Load(words []string) {
-	for _, w := range words {
-		h := hash(w)
-		if d.hashtable[h] == nil {
-			d.hashtable[h] = newList(w)
-			d.ListsCount++
-			continue
-		}
+func (d *Dictionary) Add(word string) {
+	d.Count++
+	h := hash(word)
 
-		d.hashtable[h].addToList(w)
+	if d.hashtable[h] != nil {
+		d.hashtable[h].addToList(word)
+	} else {
+		d.hashtable[h] = newList(word)
+		d.ListsCount++
 	}
-
-	d.Count = len(words)
 }
 
 func (d *Dictionary) Contains(word string) bool {

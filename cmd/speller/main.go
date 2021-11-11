@@ -11,6 +11,8 @@ import (
 
 const DEFAULT_DICTIONARY_FILE = "./assets/speller-hash/dictionaries/large"
 
+type WordsHandler func(w string)
+
 func main() {
 	args := os.Args[1:]
 	if len(args) < 1 {
@@ -32,30 +34,34 @@ func main() {
 		cfg.textFile = args[0]
 	}
 
-	stringsForDict := readStringsFromFile(cfg.dictionaryFile)
-	textStrings := readStringsFromFile(cfg.textFile)
-
 	d := dictionaries.NewDictionary()
-	d.Load(stringsForDict)
 
+	// Load words into dictionary
+	readWordsFromFile(cfg.dictionaryFile, func(w string) {
+		d.Add(w)
+	})
+
+	// Validate a text
 	fmt.Println("MISSPELLED WORDS:")
 	missspelled := 0
-	for _, w := range textStrings {
+	totalWords := 0
+
+	readWordsFromFile(cfg.textFile, func(w string) {
+		totalWords++
 		if !d.Contains(w) {
 			missspelled++
 			fmt.Printf("'%v'\n", w)
 		}
-	}
+	})
 
+	// Print statistics
 	fmt.Printf("WORDS MISSPELLED: %v\n", missspelled)
 	fmt.Printf("WORDS IN DICTIONARY: %v\n", d.Count)
 	fmt.Printf("LISTS IN DICTIONARY: %v\n", d.ListsCount)
-	fmt.Printf("WORDS IN TEXT: %v\n", len(textStrings))
+	fmt.Printf("WORDS IN TEXT: %v\n", totalWords)
 }
 
-func readStringsFromFile(filePath string) []string {
-	var result []string
-
+func readWordsFromFile(filePath string, wordsHandler WordsHandler) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		log.Fatal(err)
@@ -63,16 +69,14 @@ func readStringsFromFile(filePath string) []string {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	// optionally, resize scanner's capacity for lines over 64K, see next example
+	scanner.Split(bufio.ScanWords)
+
 	for scanner.Scan() {
 		s := scanner.Text()
-		result = append(result, s)
-		// fmt.Printf("%v has scanned.\n", s)
+		wordsHandler(s)
 	}
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
-
-	return result
 }
