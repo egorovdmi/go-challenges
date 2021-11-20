@@ -8,19 +8,17 @@ func CompressString(str string) string {
 	var prevoiusSymbol rune
 
 	for i, s := range str {
-
 		if len(result) > len(str) {
 			return str
 		}
 
-		// first symbol
-		if i == 0 {
+		if i == 0 { // first symbol
 			result = append(result, s)
 			prevoiusSymbol = s
 			count++
-		} else if prevoiusSymbol == s {
+		} else if prevoiusSymbol == s { // the same symbol
 			count++
-		} else if prevoiusSymbol != s {
+		} else if prevoiusSymbol != s { // symbol has changed
 			result = append(result, []rune(strconv.FormatInt(int64(count), 10))...)
 			result = append(result, s)
 			prevoiusSymbol = s
